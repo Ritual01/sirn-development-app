@@ -1,0 +1,10 @@
+Flask
+Flask-RESTful
+numpy
+tensorflow
+scikit-learn
+pandas
+joblib
+matplotlib
+seaborn
+keras
