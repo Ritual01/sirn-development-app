@@ -4,8 +4,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import joblib
 
-MODEL_PATH = "modeloEntrenado.pkl"
-SCALER_PATH = "scaler.pkl"
+MODEL_PATH = "modelos/modeloEntrenado.pkl"
+SCALER_PATH = "modelos/scaler.pkl"
 LOG_PATH = "log.csv"
 
 def load_model():
