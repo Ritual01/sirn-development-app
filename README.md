@@ -50,9 +50,9 @@ SIRN-DEVELOPMENT-APP-1
 
 ## Métodos de la API
 
-- **POST /red-neuronal**: Crea un nuevo modelo de red neuronal.
-- **GET /red-neuronal**: Obtiene información sobre el modelo de red neuronal.
-- **DELETE /red-neuronal**: Elimina el modelo de red neuronal.
+- **POST /red-neuronal**: Sube un json con los campos (ph,turbidez,cloro,contaminante,potabilidad) para analizarlos con la red neuronal activa.
+- **GET /red-neuronal**: Obtiene los datos actuales del uso de la red neuronal.
+- **DELETE /red-neuronal**: Elimina el dato utilizado como muestra para evitar ser utilizado en futuros entrenamientos.
 
 ## Contribuciones
 
