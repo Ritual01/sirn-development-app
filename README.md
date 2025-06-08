@@ -51,7 +51,7 @@ SIRN-DEVELOPMENT-APP-1
 
 - **POST /red-neuronal**: Sube un json con los campos (ph,turbidez,cloro,contaminante,potabilidad) para analizarlos con la red neuronal activa.
 - **GET /red-neuronal**: Obtiene los datos actuales del uso de la red neuronal.
-- **DELETE /red-neuronal**: Elimina el dato utilizado como muestra para evitar ser utilizado en futuros entrenamientos.
+- **DELETE /red-neuronal**: Elimina el dato utilizado como muestra para evitar ser utilizado en futuros entrenamientos.  //En este momento se encuentra desactivado este método
 
 ## Contribuciones
 
