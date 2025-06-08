@@ -1,10 +1,7 @@
-Flask
-Flask-RESTful
-numpy
-tensorflow
+fastapi
+uvicorn
 scikit-learn
 pandas
 joblib
 matplotlib
 seaborn
-keras

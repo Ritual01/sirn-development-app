@@ -6,14 +6,13 @@ Este proyecto es una API construida con Flask que permite interactuar con un mod
 
 ```
 SIRN-DEVELOPMENT-APP-1
-├── src
-│   ├── app.py               # Punto de entrada de la aplicación
-│   ├── rutas
-│   │   └── red_neuronal.py  # Rutas para la red neuronal
-│   ├── modelos
-│   │   └── red.py           # Definición del modelo de red neuronal
-│   └── utilidades
-│       └── __init__.py      # Funciones y clases utilitarias
+├── main.py               # Punto de entrada de la aplicación
+├── rutas
+│   └── red_neuronal.py  # Rutas para la red neuronal
+├── modelos
+│   └── red.py           # Definición del modelo de red neuronal
+├── utilidades
+│   └── __init__.py      # Funciones y clases utilitarias
 ├── bibliotecas.txt          # Dependencias del proyecto
 ├── README.md                 # Documentación del proyecto
 └── datos.csv                # Datos usados en el entrenamiento del modelo 🦎   
