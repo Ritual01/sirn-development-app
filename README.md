@@ -1,6 +1,6 @@
 # Proyecto API de Red Neuronal
 🦢
-Este proyecto es una API construida con Flask que permite interactuar con un modelo de red neuronal. La API proporciona métodos para realizar operaciones de creación, lectura y eliminación en el modelo de red neuronal.
+Este proyecto es una API construida con FastApi que permite interactuar con un modelo de red neuronal. La API proporciona métodos para realizar operaciones de creación, lectura y eliminación en el modelo de red neuronal.
 
 ## Estructura del Proyecto
 
