@@ -29,6 +29,12 @@
     .cover-eyes .hand-right {
       transform: translate(30px, -30px) rotate(-30deg);
     }
+
+    .register-link {
+      font-size: 0.9em;
+      display: block;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body class="bg-light">
@@ -53,13 +59,13 @@
           <!-- Nariz -->
           <ellipse cx="100" cy="110" rx="5" ry="3" fill="black" />
 
-          <!-- Manos animadas -->
+          <!-- Manos -->
           <circle class="hand hand-left" cx="60" cy="140" r="15" fill="#8b4513" />
           <circle class="hand hand-right" cx="140" cy="140" r="15" fill="#8b4513" />
         </svg>
       </div>
 
-      <!-- Formulario -->
+      <!-- Formulario de login -->
       <div class="card shadow p-4 mt-4">
         <h4 class="mb-3">Inicio de Sesión</h4>
         <form method="POST" action="index.php?c=Usuario&a=login">
@@ -73,6 +79,7 @@
           </div>
           <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
         </form>
+        <a href="index.php?c=Usuario&a=registro" class="register-link text-primary">¿No tienes cuenta? Regístrate aquí</a>
       </div>
     </div>
   </div>
