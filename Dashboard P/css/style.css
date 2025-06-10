@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.alert-info {
+    background-color: #cce5ff;
+    color: #004085;
+    border-color: #b8daff;
+    padding: 1em;
+    margin-bottom: 1em;
+    border-radius: 5px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 0.5em;
+}
+
+#graficoCloro {
+    max-width: 100%;
+    height: 400px;
+}
