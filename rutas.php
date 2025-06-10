@@ -4,7 +4,7 @@ $controlador = $_GET['c'] ?? 'Usuario';  // controlador por defecto
 $accion = $_GET['a'] ?? 'mostrarLogin'; // acción por defecto
 
 // Construye el nombre del archivo del controlador
-$archivo = "controllers/" . $controlador . "Controller.php";
+$archivo = "Controller/" . $controlador . "Controller.php";
 
 // Verifica que el archivo exista
 if (file_exists($archivo)) {
