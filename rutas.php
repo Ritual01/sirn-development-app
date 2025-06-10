@@ -1,18 +1,29 @@
 <?php
-$controlador = $_GET['c'] ?? 'Usuario';
-$accion = $_GET['a'] ?? 'mostrarLogin';
+// Lee parámetros de la URL
+$controlador = $_GET['c'] ?? 'Usuario';  // controlador por defecto
+$accion = $_GET['a'] ?? 'mostrarLogin'; // acción por defecto
 
-$archivo = "Controller/{$controlador}Controller.php";
+// Construye el nombre del archivo del controlador
+$archivo = "controllers/" . $controlador . "Controller.php";
+
+// Verifica que el archivo exista
 if (file_exists($archivo)) {
     require_once $archivo;
-    $clase = $controlador . 'Controller';
-    $objeto = new $clase();
 
-    if (method_exists($objeto, $accion)) {
-        $objeto->$accion();
+    $nombreClase = $controlador . "Controller";
+
+    if (class_exists($nombreClase)) {
+        $objeto = new $nombreClase();
+
+        // Verifica que la acción (método) exista en el controlador
+        if (method_exists($objeto, $accion)) {
+            $objeto->$accion();
+        } else {
+            echo "Error: la acción '$accion' no existe en el controlador '$nombreClase'.";
+        }
     } else {
-        echo "Acción no encontrada";
+        echo "Error: clase '$nombreClase' no encontrada.";
     }
 } else {
-    echo "Controlador no encontrado";
+    echo "Error: controlador '$archivo' no encontrado.";
 }

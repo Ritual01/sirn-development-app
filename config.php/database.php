@@ -1,18 +1,17 @@
 <?php
 class Database {
     public static function conectar() {
-        $host = 'localhost';
-        $dbname = 'ROMEL PONDRA';
-        $user = 'root';
-        $pass = '';
-        $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
+        $host = "w29ifufy55ljjmzq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com";
+        $usuario = "htvv7guq3cc1i2yi";
+        $password = "b79bapb51asa0mme";
+        $nombre_bd = "k9ek3c3nz5ipfihw";
 
         try {
-            $pdo = new PDO($dsn, $user, $pass);
+            $pdo = new PDO("mysql:host=$host;dbname=$nombre_bd;charset=utf8", $usuario, $password);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $pdo;
         } catch (PDOException $e) {
-            die("Error en la conexión: " . $e->getMessage());
+            die(json_encode(["error" => "Error de conexión: " . $e->getMessage()]));
         }
     }
 }
