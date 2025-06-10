@@ -1,10 +1,11 @@
 <?php
 class Database {
     public static function conectar() {
-        $host = "w29ifufy55ljjmzq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com";
-        $usuario = "htvv7guq3cc1i2yi";
-        $password = "b79bapb51asa0mme";
-        $nombre_bd = "k9ek3c3nz5ipfihw";
+        $host = 'localhost';
+        $dbname = 'ROMEL PONDRA';
+        $user = 'root';
+        $pass = '';
+        $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
 
         try {
             $pdo = new PDO("mysql:host=$host;dbname=$nombre_bd;charset=utf8", $usuario, $password);
