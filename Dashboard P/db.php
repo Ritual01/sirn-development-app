@@ -1,22 +1,23 @@
 <?php
-// db.php
-
-$host = "w29ifufy55ljjmzq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com";
-$usuario = "htvv7guq3cc1i2yi";
-$password = "b79bapb51asa0mme";
-$nombre_bd = "k9ek3c3nz5ipfihw";
+$host = 'shinkansen.proxy.rlwy.net';
+$port = 58011;
+$user = 'root';
+$password = 'MfRHWkDxulehDoyCOLXqGjrFvsFxtecQ';
+$dbname = 'railway';
 
 // Crear conexión
-$conexion = new mysqli($host, $usuario, $password, $nombre_bd);
+$conn = new mysqli($host, $user, $password, $dbname, $port);
 
 // Verificar conexión
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
 }
 
 function get_data($sql) {
-    global $conexion;
-    $result = $conexion->query($sql);
-    return $result;
+    global $conn;
+    return $conn->query($sql);
 }
+
+// No cierres la conexión aquí, hazlo al final de tu script principal
+// $conn->close();
 ?>
