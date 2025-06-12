@@ -77,7 +77,7 @@ def make_prediction(data: InputData):
 
     new_data = pd.DataFrame(
         data=[[data.ph, data.turbidez, data.temperatura, data.contaminante, prediction]],
-        columns=['ph', 'turbidez', 'temperatura', 'contaminante', 'potabilidad']
+        columns=['ph', 'turbidez', 'cloro', 'contaminante', 'potabilidad']
     )
 
     if os.path.exists("log.csv"):
