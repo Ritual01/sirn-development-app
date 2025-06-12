@@ -30,7 +30,7 @@ def get_db_connection():
         user=DB_CONFIG["user"],
         password=DB_CONFIG["password"],
         database=DB_CONFIG["database"],
-        port=DB_CONFIG["port"],  # <-- Y aquí
+        port=DB_CONFIG["port"],
         cursorclass=pymysql.cursors.DictCursor
     )
 
