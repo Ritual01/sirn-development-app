@@ -10,7 +10,7 @@ app = FastAPI()
 class InputData(BaseModel):
     ph: float
     turbidez: float
-    temperatura: float
+    cloro: float
     contaminante: float
 
 class DeleteRequest(BaseModel):
