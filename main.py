@@ -17,10 +17,10 @@ class DeleteRequest(BaseModel):
     index: int  # Índice del dato a eliminar en log.csv
 
 DB_CONFIG = {
-    "host": "TU_HOST",
-    "user": "TU_USUARIO",
-    "password": "TU_PASSWORD",
-    "database": "TU_BASE"
+    "host": "shinkansen.proxy.rlwy.net",
+    "user": "root",
+    "password": "MfRHWkDxulehDoyCOLXqGjrFvsFxtecQ",
+    "database": "railway"
 }
 
 def get_db_connection():
