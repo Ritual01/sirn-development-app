@@ -79,7 +79,7 @@
           </div>
           <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
         </form>
-        <a href="index.php?c=Usuario&a=registro" class="register-link text-primary">¿No tienes cuenta? Regístrate aquí</a>
+        <a href="index.php?c=Usuario&a=mostrarRegistro" class="register-link text-primary">¿No tienes cuenta? Regístrate aquí</a>
       </div>
     </div>
   </div>
