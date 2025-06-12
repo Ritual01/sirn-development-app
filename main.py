@@ -20,7 +20,8 @@ DB_CONFIG = {
     "host": "shinkansen.proxy.rlwy.net",
     "user": "root",
     "password": "MfRHWkDxulehDoyCOLXqGjrFvsFxtecQ",
-    "database": "railway"
+    "database": "railway",
+    "port": 58011 
 }
 
 def get_db_connection():
@@ -29,6 +30,7 @@ def get_db_connection():
         user=DB_CONFIG["user"],
         password=DB_CONFIG["password"],
         database=DB_CONFIG["database"],
+        port=DB_CONFIG["port"],  # <-- Y aquí
         cursorclass=pymysql.cursors.DictCursor
     )
 
