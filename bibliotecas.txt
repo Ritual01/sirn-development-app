@@ -5,3 +5,4 @@ pandas
 joblib
 matplotlib
 seaborn
+pymysql
