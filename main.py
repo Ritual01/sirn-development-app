@@ -74,11 +74,11 @@ def get_report():
 
 @app.post("/predict")
 def make_prediction(data: InputData):
-    input_data = [[data.ph, data.turbidez, data.temperatura, data.contaminante]]
+    input_data = [[data.ph, data.turbidez, data.cloro, data.contaminante]]
     prediction = predict(model, input_data)[0]
 
     new_data = pd.DataFrame(
-        data=[[data.ph, data.turbidez, data.temperatura, data.contaminante, prediction]],
+        data=[[data.ph, data.turbidez, data.cloro, data.contaminante, prediction]],
         columns=['ph', 'turbidez', 'cloro', 'contaminante', 'potabilidad']
     )
 
