@@ -1,8 +1,18 @@
+/* FUENTE Y FONDO GENERAL */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #f8fafc 0%, #dbeafe 100%);
+    background: linear-gradient(135deg, #e0f2fe 0%, #fef9c3 100%);
     margin: 0;
     padding: 0;
+}
+
+/* TITULOS */
+h1.titulo {
+    text-align: center;
+    font-size: 2.4rem;
+    margin: 0 auto;
+    color: #1e3a8a;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 h2, h3 {
@@ -14,18 +24,30 @@ h2, h3 {
     text-shadow: 0 2px 8px rgba(30, 41, 59, 0.10);
 }
 
-.alert-info {
-    background: linear-gradient(90deg, #f0fdfa 60%, #e0e7ff 100%);
-    color: #0e7490;
-    border-left: 6px solid #6366f1;
-    padding: 1em 1.5em;
-    margin: 2em auto 1.5em auto;
-    border-radius: 10px;
-    max-width: 600px;
-    box-shadow: 0 2px 12px rgba(99, 102, 241, 0.08);
-    font-size: 1.1em;
+/* CONTENEDOR GENERAL CENTRADO */
+.contenedor-central {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2em;
 }
 
+/* ALERTA DE CONEXIÓN */
+.alert-info {
+    background: linear-gradient(90deg, #dbeafe, #e0f2fe);
+    color: #0369a1;
+    border-left: 6px solid #0ea5e9;
+    padding: 1.5em 2em;
+    margin: 3em auto;
+    border-radius: 14px;
+    max-width: 600px;
+    font-size: 1.1em;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* TABLA */
 .table {
     width: 92%;
     margin: 1.5em auto 2em auto;
@@ -72,25 +94,38 @@ h2, h3 {
     font-weight: 500;
 }
 
+/* GRÁFICO DE CLORO */
 #graficoCloro {
     display: block;
-    margin: 2em auto 2em auto;
-    background: linear-gradient(120deg, #f0fdfa 60%, #e0e7ff 100%);
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(99, 102, 241, 0.12);
+    margin: 2em auto;
     padding: 1em;
-    max-width: 200px;
-    max-height: 110px;
-    border: 2px solid #6366f1;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
+    border: 2px solid #60a5fa;
 }
 
+/* FOOTER */
+footer {
+    background-color: #f1f5f9;
+    color: #475569;
+    text-align: center;
+    padding: 1em;
+    margin-top: 4em;
+    border-top: 2px solid #cbd5e1;
+}
+
+/* RESPONSIVE */
 @media (max-width: 600px) {
     .table, .alert-info {
         width: 98%;
         font-size: 0.95em;
     }
+
     #graficoCloro {
         max-width: 98vw;
-        max-height: 100px;
+        max-height: 240px;
     }
 }
