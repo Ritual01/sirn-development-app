@@ -23,11 +23,11 @@
     }
 
     .cover-eyes .hand-left {
-      transform: translate(-30px, -30px) rotate(30deg);
+      transform: translate(30px, -30px) rotate(30deg);
     }
 
     .cover-eyes .hand-right {
-      transform: translate(30px, -30px) rotate(-30deg);
+      transform: translate(-30px, -30px) rotate(-30deg);
     }
 
     .register-link {
