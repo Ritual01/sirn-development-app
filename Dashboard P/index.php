@@ -2,87 +2,116 @@
 include 'includes/header.php';
 include 'db.php';
 
-// Consulta para obtener todos los registros (ajusta los campos según tu tabla)
+$fecha_actual = date('Y-m-d');
+$fecha_inicio = date('Y-m-d', strtotime('-7 days'));
+
 $sql = "SELECT * FROM analisis ORDER BY fecha_analisis DESC LIMIT 10";
 $resultados = get_data($sql);
 
-// Obtener los últimos 7 días para el gráfico semanal
-$fecha_actual = date('Y-m-d');
-$fecha_inicio = date('Y-m-d', strtotime('-7 days'));
 $sql_semanal = "SELECT muestra_id, fecha_analisis FROM analisis WHERE fecha_analisis BETWEEN '$fecha_inicio' AND '$fecha_actual'";
 $resultados_semanales = get_data($sql_semanal);
 
-// Manejo de errores para depuración
-if (!$resultados) {
-    die("Error en la consulta de registros: " . $conn->error);
+if (!$resultados || !$resultados_semanales) {
+    die("Error en la consulta: " . $conn->error);
 }
-if (!$resultados_semanales) {
-    die("Error en la consulta semanal: " . $conn->error);
-}
-
-// Mensaje de conexión exitosa
-echo '<div class="alert-success">Conexión exitosa a la base de datos <b>Railway</b>.</div>';
 ?>
 
-<h2>Monitoreo de Calidad del Agua</h2>
+<div class="container my-4">
+    <div class="text-center mb-4" data-aos="fade-down">
+        <h2 class="titulo">Monitoreo de Calidad del Agua</h2>
+        <div class="alert alert-success mt-3 mx-auto" style="max-width: 600px;">
+            Conexión exitosa a la base de datos <b>Railway</b>.
+        </div>
+        <div class="alert alert-info mt-3 mx-auto" style="max-width: 600px;">
+            Última actualización: <?php echo $fecha_actual; ?>
+        </div>
+    </div>
 
-<div class="alert alert-info">
-    Última actualización: <?php echo $fecha_actual; ?>
+    <div class="card p-3 shadow" data-aos="fade-up">
+        <h3 class="text-center mb-3">Últimos Registros</h3>
+        <div class="table-responsive">
+            <table id="tablaRegistros" class="table table-bordered table-striped table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>ID</th>
+                        <th>Muestra ID</th>
+                        <th>Fecha de Análisis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($fila = $resultados->fetch_assoc()): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($fila['id']) ?></td>
+                            <td><?= htmlspecialchars($fila['muestra_id']) ?></td>
+                            <td><?= htmlspecialchars($fila['fecha_analisis']) ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mt-5 p-4 shadow" data-aos="zoom-in">
+        <h3 class="text-center mb-3">Gráfico Semanal de Muestras</h3>
+        <canvas id="graficoCloro" height="160"></canvas>
+    </div>
 </div>
 
-<h3>Últimos Registros</h3>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Muestra ID</th>
-            <th>Fecha de Análisis</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php while ($fila = $resultados->fetch_assoc()): ?>
-        <tr>
-            <td><?php echo htmlspecialchars($fila['id']); ?></td>
-            <td><?php echo htmlspecialchars($fila['muestra_id']); ?></td>
-            <td><?php echo htmlspecialchars($fila['fecha_analisis']); ?></td>
-        </tr>
-        <?php endwhile; ?>
-    </tbody>
-</table>
-
-<h3>Gráfico Semanal de Muestras</h3>
-<canvas id="graficoCloro" width="400" height="200"></canvas>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+<!-- Cargar Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-const ctx = document.getElementById('graficoCloro').getContext('2d');
-const grafico = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: [<?php 
-            $resultados_semanales->data_seek(0);
-            while ($fila = $resultados_semanales->fetch_assoc()) {
-                echo '"' . $fila['fecha_analisis'] . '",';
-            }
-        ?>],
-        datasets: [{
-            label: 'Muestra ID',
-            data: [<?php 
-                $resultados_semanales->data_seek(0); // Reiniciar puntero
+    const ctx = document.getElementById('graficoCloro').getContext('2d');
+    const grafico = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [<?php 
+                $fechas = [];
+                $niveles = [];
+                $resultados_semanales->data_seek(0);
                 while ($fila = $resultados_semanales->fetch_assoc()) {
-                    echo '"' . $fila['muestra_id'] . '",';
+                    $fechas[] = '"' . $fila['fecha_analisis'] . '"';
+                    $niveles[] = $fila['muestra_id'];
                 }
+                echo implode(",", $fechas);
             ?>],
-            borderColor: 'blue',
-            fill: false
-        }]
-    },
-    options: {
-        scales: {
-            y: { beginAtZero: true }
+            datasets: [{
+                label: 'Muestra ID',
+                data: [<?php echo implode(",", $niveles); ?>],
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Tendencia del Nivel de Cloro'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'ID de Muestra'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Fecha de Análisis'
+                    }
+                }
+            }
         }
-    }
-});
+    });
 </script>
 
 <?php include 'includes/footer.php'; ?>
