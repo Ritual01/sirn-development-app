@@ -6,7 +6,7 @@ $user = 'root';
 $password = 'MfRHWkDxulehDoyCOLXqGjrFvsFxtecQ';
 $dbname = 'railway';
 
-// Crear conexión con MySQLi
+// Crear conexión con MySQLi 
 $conn = new mysqli($host, $user, $password, $dbname, $port);
 
 // Verificar conexión
