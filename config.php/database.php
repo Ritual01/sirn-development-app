@@ -1,19 +1,16 @@
 <?php
-class Database {
-    public static function conectar() {
-        $host = 'localhost';
-        $dbname = 'ROMEL PONDRA';
-        $user = 'root';
-        $pass = '';
-        $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
+// Configuración de conexión a la base de datos
+$host = 'shinkansen.proxy.rlwy.net';
+$port = 58011;
+$user = 'root';
+$password = 'MfRHWkDxulehDoyCOLXqGjrFvsFxtecQ';
+$dbname = 'railway';
 
-        try {
-            $pdo = new PDO("mysql:host=$host;dbname=$nombre_bd;charset=utf8", $usuario, $password);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return $pdo;
-        } catch (PDOException $e) {
-            die(json_encode(["error" => "Error de conexión: " . $e->getMessage()]));
-        }
-    }
+// Crear conexión con MySQLi 
+$conn = new mysqli($host, $user, $password, $dbname, $port);
+
+// Verificar conexión
+if ($conn->connect_error) {
+    die("<div class='alert alert-danger text-center mt-4'><strong>Error de conexión:</strong> " . htmlspecialchars($conn->connect_error) . "</div>");
 }
 ?>

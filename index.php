@@ -3,7 +3,7 @@ session_start();
 
 // Si no está autenticado, redirige a login
 if (!isset($_SESSION['usuario'])) {
-    header('Location: usuarios/login.php');
+    header('Location: /sirn-development-app/Views/usuarios/login.php');
     exit();
 }
 
