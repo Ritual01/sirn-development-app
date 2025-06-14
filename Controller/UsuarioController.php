@@ -1,78 +1,112 @@
 <?php
-class UsuarioController {
-    public function mostrarLogin() {
-        require_once 'Views/usuarios/login.php';
+require_once __DIR__ . '/../Models/Usuario.php';
+
+class UsuarioController
+{
+    // Mostrar formulario de login
+    public function loginForm()
+    {
+        require_once __DIR__ . '/../usuarios/login.php';
     }
 
-    public function login() {
-        $correo = $_POST['correo'];
-        $password = $_POST['password'];
+    // Procesar login
+    public function login()
+    {
+        session_start();
+        require __DIR__ . '/../config/database.php';
 
-        $url = "https://TU_DOMINIO_O_IP/api-auth/index.php"; // Cambiar por la URL real de tu API
-        $data = json_encode(["correo" => $correo, "password" => $password]);
+        $correo = $_POST['correo'] ?? '';
+        $password = $_POST['password'] ?? '';
 
-        $options = [
-            "http" => [
-                "header"  => "Content-type: application/json",
-                "method"  => "POST",
-                "content" => $data
-            ]
-        ];
+        $usuario = Usuario::validarLogin($conexion, $correo, $password);
 
-        $context = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-        $response = json_decode($result, true);
-
-        if (isset($response["token"])) {
-            session_start();
-            $_SESSION["usuario"] = $response["usuario"];
-            $_SESSION["token"] = $response["token"];
-            header("Location: index.php?c=Muestra&a=formulario");
+        if ($usuario) {
+            $_SESSION['usuario'] = $usuario->nombre;
+            header('Location: /sirn-development-app/index.php');
+            exit();
         } else {
-            echo "<script>alert('Credenciales incorrectas'); window.location.href='index.php';</script>";
+            $error = "Correo o contraseña incorrectos";
+            require __DIR__ . '/../usuarios/login.php';
         }
     }
 
-    public function mostrarRegistro() {
-        require_once 'Views/usuarios/registro.php';
+    // Cerrar sesión
+    public function logout()
+    {
+        session_start();
+        session_destroy();
+        header('Location: /sirn-development-app/usuarios/login.php');
+        exit();
     }
 
-    public function guardarRegistro() {
-        $nombre = $_POST['nombre'];
-        $correo = $_POST['correo'];
-        $password = $_POST['password'];
-        $confirmar_password = $_POST['confirmar_password'];
+    // Mostrar todos los usuarios
+    public function index()
+    {
+        require __DIR__ . '/../config/database.php';
+        $usuarios = Usuario::obtenerTodos($conexion);
+        require __DIR__ . '/../usuarios/lista.php';
+    }
 
-        if ($password !== $confirmar_password) {
-            echo "<script>alert('Las contraseñas no coinciden'); window.location.href='index.php?c=Usuario&a=mostrarRegistro';</script>";
-            return;
-        }
+    // Mostrar formulario de registro
+    public function crearForm()
+    {
+        require __DIR__ . '/../usuarios/crear.php';
+    }
 
-        $url = "https://TU_DOMINIO_O_IP/api-auth/registro.php"; // Cambia por la URL real de tu API de registro
-        $data = json_encode([
-            "nombre" => $nombre,
-            "correo" => $correo,
-            "password" => $password
+    // Procesar registro de usuario
+    public function crear()
+    {
+        require __DIR__ . '/../config/database.php';
+        $usuario = new Usuario([
+            'nombre' => $_POST['nombre'],
+            'correo' => $_POST['correo'],
+            'password' => $_POST['password']
         ]);
+        $usuario->crear($conexion);
+        header('Location: /sirn-development-app/index.php?c=Usuario&a=index');
+        exit();
+    }
 
-        $options = [
-            "http" => [
-                "header"  => "Content-type: application/json",
-                "method"  => "POST",
-                "content" => $data
-            ]
-        ];
-
-        $context = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-        $response = json_decode($result, true);
-
-        if (isset($response["success"]) && $response["success"]) {
-            echo "<script>alert('Registro exitoso, ahora puedes iniciar sesión'); window.location.href='index.php?c=Usuario&a=mostrarLogin';</script>";
-        } else {
-            $mensaje = isset($response["mensaje"]) ? $response["mensaje"] : "Error al registrar usuario";
-            echo "<script>alert('$mensaje'); window.location.href='index.php?c=Usuario&a=mostrarRegistro';</script>";
+    // Mostrar formulario de edición
+    public function editarForm()
+    {
+        require __DIR__ . '/../config/database.php';
+        $id = $_GET['id'] ?? null;
+        $usuario = null;
+        if ($id) {
+            $result = $conexion->query("SELECT * FROM usuarios WHERE id = $id");
+            $data = $result->fetch_assoc();
+            $usuario = new Usuario($data);
         }
+        require __DIR__ . '/../usuarios/editar.php';
+    }
+
+    // Procesar edición de usuario
+    public function editar()
+    {
+        require __DIR__ . '/../config/database.php';
+        $usuario = new Usuario([
+            'id' => $_POST['id'],
+            'nombre' => $_POST['nombre'],
+            'correo' => $_POST['correo'],
+            'password' => $_POST['password']
+        ]);
+        $usuario->actualizar($conexion);
+        header('Location: /sirn-development-app/index.php?c=Usuario&a=index');
+        exit();
+    }
+
+    // Eliminar usuario
+    public function eliminar()
+    {
+        require __DIR__ . '/../config/database.php';
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            $usuario = new Usuario(['id' => $id]);
+            $usuario->eliminar($conexion);
+        }
+        header('Location: /sirn-development-app/index.php?c=Usuario&a=index');
+        exit();
     }
 }
 ?>

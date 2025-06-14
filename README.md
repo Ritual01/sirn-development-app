@@ -1,10 +1,18 @@
-# API de Red Neuronal 🦢
 
-Este proyecto es una API construida con FastAPI que permite interactuar con un modelo de red neuronal para analizar la potabilidad del agua. Proporciona endpoints para analizar muestras, consultar resultados y gestionar datos.
+# SIRN Development App
 
-## Estructura Completa del Proyecto
+Aplicación web para la gestión y análisis de muestras de agua, desarrollada en PHP bajo arquitectura MVC simple.
 
-```
+## Características
+
+- Registro de muestras con atributos: lugar, fecha, pH, turbidez, temperatura y nivel de cloro.
+- Envío de datos a una API externa para análisis.
+- Almacenamiento de muestras en base de datos.
+- Panel de dashboard y consulta de servicio externo.
+- Autenticación de usuarios mediante login.
+
+## Estructura de Carpetas
+
 sirn-development-app/
 ├── bdSirn.sql                       # Script de base de datos SQL
 ├── bibliotecas.txt                  # Dependencias Python del proyecto
@@ -57,46 +65,68 @@ sirn-development-app/
 │       ├── login.php                # Vista de inicio de sesión
 │       └── registro.php             # Vista de registro de usuario
 └── __pycache__/                     # Archivos cacheados de Python
-```
+<?php
+require_once 'Models/Muestra.php';
 
-## Instalación
+class MuestraController {
+    public function formulario() {
+        require_once 'Views/muestras/formulario.php';
+    }
 
-1. Clona el repositorio:
-   ```
-   git clone https://github.com/Ritual01/sirn-development-app
-   cd sirn-development-app
-   ```
+    public function guardar() {
+        require_once __DIR__ . '/../config/database.php';
 
-2. Crea un entorno virtual y actívalo:
-   ```
-   python -m venv venv
-   # En Linux o Mac
-   source venv/bin/activate
-   # En Windows
-   venv\Scripts\activate
-   ```
+        // Recibe los datos del formulario
+        $lugar = $_POST['lugar'];
+        $fecha = $_POST['fecha'];
+        $ph = $_POST['ph'];
+        $turbidez = $_POST['turbidez'];
+        $temperatura = $_POST['temperatura'];
+        $nivel_cloro = $_POST['nivel_cloro'];
 
-3. Instala las dependencias:
-   ```
-   pip install -r bibliotecas.txt
-   ```
+        // Guarda en la base de datos
+        $sql = "INSERT INTO muestra (lugar, fecha, ph, turbidez, temperatura, nivel_cloro) 
+                VALUES (:lugar, :fecha, :ph, :turbidez, :temperatura, :nivel_cloro)";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':lugar', $lugar);
+        $stmt->bindParam(':fecha', $fecha);
+        $stmt->bindParam(':ph', $ph);
+        $stmt->bindParam(':turbidez', $turbidez);
+        $stmt->bindParam(':temperatura', $temperatura);
+        $stmt->bindParam(':nivel_cloro', $nivel_cloro);
+        $stmt->execute();
 
-## Uso
+        // Llama a la API
+        $data_api = [
+            "ph" => floatval($ph),
+            "turbidez" => floatval($turbidez),
+            "temperatura" => floatval($temperatura),
+            "nivel_cloro" => floatval($nivel_cloro)
+        ];
+        $ch = curl_init('https://sirn-development-app-production.up.railway.app/predict');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data_api));
+        $api_response = curl_exec($ch);
+        curl_close($ch);
 
-1. Inicia la aplicación:
-   ```
-   python main.py
-   ```
+        $resultado = json_decode($api_response, true);
 
-2. Realiza peticiones a la API utilizando herramientas como Postman o cURL.
+        // Prepara los datos para la vista
+        $datos = [
+            'lugar' => $lugar,
+            'fecha' => $fecha,
+            'ph' => $ph,
+            'turbidez' => $turbidez,
+            'temperatura' => $temperatura,
+            'nivel_cloro' => $nivel_cloro,
+            'resultado_api' => $resultado // Ajusta el nombre según lo que devuelva la API
+        ];
 
-## Endpoints de la API
+        // Carga la vista y pasa los datos
+        require_once __DIR__ . '/../Views/analisis/resultado.php';
+    }
+}
+?>
 
-- **POST /red-neuronal**: Envía un JSON con los campos `ph`, `turbidez`, `cloro`, `contaminante` para analizarlos con la red neuronal activa. Devuelve el parámetro `potabilidad`.
-- **GET /red-neuronal**: Obtiene los datos actuales del uso de la red neuronal.
-- **DELETE /red-neuronal**: Elimina el dato utilizado como muestra para evitar que sea usado en futuros entrenamientos.  
-  _Nota: Actualmente este método está desactivado._
-
-## Contribuciones
-
-Las contribuciones son bienvenidas. Si deseas contribuir, por favor abre un issue o envía un pull request. Se dará prioridad a los que tengan el emoji del cisne "🦢".

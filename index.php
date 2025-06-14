@@ -1,16 +1,13 @@
 <?php
-<<<<<<< HEAD
 session_start();
 
 // Si no está autenticado, redirige a login
 if (!isset($_SESSION['usuario'])) {
-    header('Location: usuarios/login.php');
+    header('Location: /sirn-development-app/Views/usuarios/login.php');
     exit();
 }
 
-=======
 // Este archivo se coloca en la raíz del proyecto
->>>>>>> 552c46309d4b51bffce4ad44a969e4e99bb5ecdb
 require_once 'rutas.php';
 require_once 'C:\xampp\htdocs\sirn-development-app\config\database.php';
 
